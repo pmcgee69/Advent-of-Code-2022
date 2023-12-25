@@ -27,9 +27,8 @@ What would your total score be if everything goes exactly according to your stra
 uses
   system.Classes,
   system.StrUtils,
-  U_Utils_Functional in 'U_Utils_Functional.pas';
+  U_Utils_Functional in '..\U_Utils_Functional.pas';
 
-   //spring.container;
 
 type
 
@@ -60,7 +59,7 @@ begin
 end;
 
 
-function Score ( r:res_type ) : integer;
+function score ( r:res_type ) : integer;
 begin
    case (r.sec - r.fst) of             // same choice = draw,  "1 ahead" (mod 3) = win, "1 behind" (mod 3) = lose
           0 : result := 3;
@@ -88,12 +87,9 @@ end;
 
 
 
-function Sum ( i,j:integer) : integer;   begin  exit( i+j )  end;
-
-
 begin
 
-   // Preliminaries
+       // Preliminaries
 
    var sl := TStringList.create;
        sl.LoadFromFile('..\..\Prob 2 Data.txt');
@@ -101,17 +97,17 @@ begin
    var elflist :=  UFP.List_Map < res_type > (sl, transform_to_tuple );             //  Map (sl, transform_to_tuple)
 
 
-   // Part 1
+       // Part 1
 
-   var scores1 :=  UFP.List_Map < res_type, integer > (elflist, Score );            //  Map (elflist, Score)
+   var scores1 :=  UFP.List_Map < res_type, integer > (elflist, score );            //  Map (elflist, Score)
 
    var total1   :=  UFP.List_Reduce<integer> ( scores1, Sum );                      //  Reduce (scores1, Sum)
 
-   writeln;  //for var i in scores do write( i:4, '  '); writeln;
-   writeln( 'Part 1 answer : ', total1);
+       writeln;  //for var i in scores do write( i:4, '  '); writeln;
+       writeln( 'Part 1 answer : ', total1);
 
 
-   // Part 2
+       // Part 2
 
    var elflist2 :=  UFP.List_Map < res_type, res_type > (elflist, myreaction );     //  Map (elflist, myreaction)
 
@@ -119,8 +115,10 @@ begin
 
    var total2   :=  UFP.List_Reduce<integer> ( scores2, Sum );                      //  Reduce (scores2, Sum)
 
-   writeln;
-   writeln( 'Part 2 answer : ', total2);
+       writeln;
+       writeln( 'Part 2 answer : ', total2);
 
-   readln;
+       readln;
 end.
+
+

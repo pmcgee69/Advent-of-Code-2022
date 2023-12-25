@@ -42,9 +42,7 @@ uses
   System.SysUtils,
   system.Classes,
   generics.Collections,
-  U_Utils_Functional in 'U_Utils_Functional.pas';
-
-   //spring.container;
+  U_Utils_Functional in '..\U_Utils_Functional.pas';
 
 
   function IntToStr ( s  :string ) : integer;   begin  exit( s.ToInteger ) end;
@@ -57,7 +55,7 @@ uses
 
 begin
 
-   // Preliminaries
+       // Preliminaries
 
    var sl := TStringList.create;
        sl.LineBreak := #13+#10+#13+#10;
@@ -77,28 +75,28 @@ begin
            B.Add(   UFP.List_Map<integer> ( a_, IntToStr )  );     //
 
 
-  // Part 1
+       // Part 1
 
    var C := TList< integer >.Create;                               //
-       for var b_ in B do                                          //    List of integer
+       for var b_ in B do                                          //   List of integer
            C.add(   UFP.List_Reduce<integer> ( b_, Sum )    );     //
 
-   writeln;
-   writeln(         UFP.List_Reduce<integer> ( C, Max )  );        //  max list entry
-   writeln;
+       writeln;
+       writeln(     UFP.List_Reduce<integer> ( C, Max )  );        //   max list entry
+       writeln;
 
 
-  // Part 2
+       // Part 2
 
-   C.Sort;
-   begin
-        var tot := 0;
-        for var i:= C.Count-1 downto C.Count-3 do begin            // top 3 entries
-            writeln( C[i] );
-            tot := tot + C[i];
-        end;
-        writeln( tot );
-   end;
+       C.Sort;
+       begin
+            var tot := 0;
+            for var i:= C.Count-1 downto C.Count-3 do begin        //   top 3 entries
+                writeln( C[i] );
+                tot := tot + C[i];
+            end;
+            writeln( tot );
+       end;
 
 
 {
