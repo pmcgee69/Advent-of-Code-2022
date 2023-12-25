@@ -73,6 +73,7 @@ begin
 end;
 
 
+
 function group_by_triples( sl:TStringlist ) : TList< tri_type >;
 begin
    result := TList< tri_type >.Create;
@@ -117,27 +118,27 @@ begin
 
        // Part 1
 
-   var rucksacks :=  UFP.List_Map < res_type > (sl, transform_to_tuple );          //  Map (sl, transform_to_tuple)
+   var rucksacks :=  { Map (sl, transform_to_tuple) }    UFP.List_Map < res_type > (sl, transform_to_tuple );
 
-   var common    :=  UFP.List_Map <res_type, char>  (rucksacks, find_common);      //  Map (rucksacks, find_common)
+   var common    :=  { Map (rucksacks, find_common) }    UFP.List_Map <res_type, char>  (rucksacks, find_common);
 
-   var priority  :=  UFP.List_Map <char, integer>   (common, calc_priority );      //  Map (common, calc_priority)
+   var priority  :=  { Map (common, calc_priority)  }    UFP.List_Map <char, integer>   (common, calc_priority );
 
-   var total1    :=  UFP.List_Reduce<integer> ( priority, Sum );                   //  Reduce (priority, Sum)
+   var total1    :=  { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
 
-       writeln;  //for var i in common do write( i, '   '); writeln;
+       writeln;
        writeln( 'Part 1 answer : ', total1);
 
 
    // Part 2
 
-   var triples  :=  group_by_triples( sl );                                        //  GroupBy triples (sl)
+   var triples  :=   { GroupBy triples (sl)         }    group_by_triples( sl );
 
-   var common2  :=  UFP.List_Map <tri_type, char>  (triples, find_common2);        //  Map (triples, find_common2)
+   var common2  :=   { Map (triples, find_common2)  }    UFP.List_Map <tri_type, char>  (triples, find_common2);
 
-       priority :=  UFP.List_Map <char, integer>   (common2, calc_priority );      //  Map (common2, calc_priority)
+       priority :=   { Map (common2, calc_priority) }    UFP.List_Map <char, integer>   (common2, calc_priority );
 
-   var total2   :=  UFP.List_Reduce<integer> ( priority, Sum );                    //  Reduce (priority, Sum)
+   var total2   :=   { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
 
        writeln;
        writeln( 'Part 2 answer : ', total2);

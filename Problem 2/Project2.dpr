@@ -2,6 +2,8 @@
 program Project2;
 
 {
+https://adventofcode.com/2022/day/2
+
 Suppose you were given the following strategy guide:
 
 A Y
@@ -99,9 +101,9 @@ begin
 
        // Part 1
 
-   var scores1  :=  { Map (elflist, score) }            UFP.List_Map < res_type, integer > (elflist, score );
+   var scores1  :=  { Map (elflist, score)         }    UFP.List_Map < res_type, integer > (elflist, score );
 
-   var total1   :=  { Reduce (scores1, Sum) }           UFP.List_Reduce<integer> ( scores1, Sum );
+   var total1   :=  { Reduce (scores1, Sum)        }    UFP.List_Reduce<integer> ( scores1, Sum );
 
        writeln;
        writeln( 'Part 1 answer : ', total1);
@@ -109,11 +111,11 @@ begin
 
        // Part 2
 
-   var elflist2 :=  { Map (elflist, myreaction) }       UFP.List_Map < res_type, res_type > (elflist, myreaction );
+   var elflist2 :=  { Map (elflist, myreaction)    }    UFP.List_Map < res_type, res_type > (elflist, myreaction );
 
-   var scores2  :=  { Map (elflist2, score) }           UFP.List_Map < res_type, integer  > (elflist2, score );
+   var scores2  :=  { Map (elflist2, score)        }    UFP.List_Map < res_type, integer  > (elflist2, score );
 
-   var total2   :=  { Reduce (scores2, Sum) }           UFP.List_Reduce<integer> ( scores2, Sum );
+   var total2   :=  { Reduce (scores2, Sum)        }    UFP.List_Reduce<integer> ( scores2, Sum );
 
        writeln;
        writeln( 'Part 2 answer : ', total2);
