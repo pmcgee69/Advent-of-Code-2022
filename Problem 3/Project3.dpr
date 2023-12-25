@@ -33,10 +33,7 @@ uses
   system.Classes,
   system.StrUtils,
   generics.Collections,
-  U_Utils_Functional in '..\..\U_Utils_Functional.pas';
-
-//spring.container;
-
+  U_Utils_Functional in '..\U_Utils_Functional.pas';
 
 type
   alpha1 = 'a'..'z';
@@ -56,6 +53,8 @@ type
 const
   tri_nil  : tri_type = ();
 
+
+
 function transform_to_tuple( s:string ) : res_type;
 begin
    var      l := length(s) div 2;
@@ -72,14 +71,6 @@ begin
    for var ch in r.fst do  left := left + [ch];
    for var ch in r.sec do  if ch in left then result := ch;
 end;
-
-
-function calc_priority( ch:char ) : integer;
-begin
-  if ch > 'Z' then result := val_1[ch]        // lowercase
-              else result := val_2[ch]        // uppercase
-end;
-
 
 
 function group_by_triples( sl:TStringlist ) : TList< tri_type >;
@@ -108,20 +99,23 @@ begin
 end;
 
 
-
-function Sum ( i,j:integer) : integer;   begin  exit( i+j )  end;
+function calc_priority( ch:char ) : integer;
+begin
+  if ch > 'Z' then result := val_1[ch]        // lowercase
+              else result := val_2[ch]        // uppercase
+end;
 
 
 
 begin
 
-   // Preliminaries
+       // Preliminaries
 
    var sl := TStringList.create;
        sl.LoadFromFile('..\..\Prob 3 Data.txt');
 
 
-   // Part 1
+       // Part 1
 
    var rucksacks :=  UFP.List_Map < res_type > (sl, transform_to_tuple );          //  Map (sl, transform_to_tuple)
 
@@ -131,8 +125,8 @@ begin
 
    var total1    :=  UFP.List_Reduce<integer> ( priority, Sum );                   //  Reduce (priority, Sum)
 
-   writeln;  //for var i in common do write( i, '   '); writeln;
-   writeln( 'Part 1 answer : ', total1);
+       writeln;  //for var i in common do write( i, '   '); writeln;
+       writeln( 'Part 1 answer : ', total1);
 
 
    // Part 2
@@ -145,11 +139,11 @@ begin
 
    var total2   :=  UFP.List_Reduce<integer> ( priority, Sum );                    //  Reduce (priority, Sum)
 
-   writeln;
-   writeln( 'Part 2 answer : ', total2);
+       writeln;
+       writeln( 'Part 2 answer : ', total2);
 
 
-   readln;
+       readln;
 end.
 
 

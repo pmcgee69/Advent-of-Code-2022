@@ -2,6 +2,17 @@
     <PropertyGroup>
         <ProjectGuid>{03742747-BD46-4316-986D-A334015D0E00}</ProjectGuid>
     </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Problem 1\Project1.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Problem 2\Project2.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Problem 3\Project3.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
         <Borland.ProjectType/>
@@ -9,14 +20,41 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="Project1">
+        <MSBuild Projects="Problem 1\Project1.dproj"/>
+    </Target>
+    <Target Name="Project1:Clean">
+        <MSBuild Projects="Problem 1\Project1.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project1:Make">
+        <MSBuild Projects="Problem 1\Project1.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Project2">
+        <MSBuild Projects="Problem 2\Project2.dproj"/>
+    </Target>
+    <Target Name="Project2:Clean">
+        <MSBuild Projects="Problem 2\Project2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project2:Make">
+        <MSBuild Projects="Problem 2\Project2.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Project3">
+        <MSBuild Projects="Problem 3\Project3.dproj"/>
+    </Target>
+    <Target Name="Project3:Clean">
+        <MSBuild Projects="Problem 3\Project3.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project3:Make">
+        <MSBuild Projects="Problem 3\Project3.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget/>
+        <CallTarget Targets="Project1;Project2;Project3"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget/>
+        <CallTarget Targets="Project1:Clean;Project2:Clean;Project3:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget/>
+        <CallTarget Targets="Project1:Make;Project2:Make;Project3:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

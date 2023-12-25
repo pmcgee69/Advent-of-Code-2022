@@ -45,14 +45,6 @@ uses
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
 
-  function IntToStr ( s  :string ) : integer;   begin  exit( s.ToInteger ) end;
-
-  function Sum      ( i,j:integer) : integer;   begin  exit( i+j )         end;
-
-  function Max      ( i,j:integer) : integer;   begin  if i<j then exit(j) else exit(i)  end;
-
-
-
 begin
 
        // Preliminaries
@@ -72,7 +64,7 @@ begin
 
    var B := TList< TList<Integer> >.Create;                        //
        for var a_ in A do                                          //   list of List<integer>
-           B.Add(   UFP.List_Map<integer> ( a_, IntToStr )  );     //
+           B.Add(   UFP.List_Map<integer> ( a_, StringToInt ) );   //
 
 
        // Part 1
