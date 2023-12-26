@@ -48,15 +48,15 @@ type
 
 function transform_to_tuple( s:string ) : res_type;
 begin
-  case ord(s[1]) of
-       ord('A') : result.fst := Val_opp[A];
-       ord('B') : result.fst := Val_opp[B];
-       ord('C') : result.fst := Val_opp[C];
+  case s[1] of
+        'A' : result.fst := Val_opp[A];
+        'B' : result.fst := Val_opp[B];
+        'C' : result.fst := Val_opp[C];
   end;
-  case ord(s[3]) of
-       ord('X') : result.sec := Val_we [X];
-       ord('Y') : result.sec := Val_we [Y];
-       ord('Z') : result.sec := Val_we [Z];
+  case s[3] of
+        'X' : result.sec := Val_we [X];
+        'Y' : result.sec := Val_we [Y];
+        'Z' : result.sec := Val_we [Z];
   end;
 end;
 
