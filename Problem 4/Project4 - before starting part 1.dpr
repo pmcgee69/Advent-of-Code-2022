@@ -72,50 +72,6 @@ const
 //   result.fst :=  leftstr(s,l);
 //   result.sec := rightstr(s,l);
 //end;
-//
-//
-//function find_common( r:res_type ) : char;
-//var left : items;
-//begin
-//   left := [];
-//   result := '*';
-//   for var ch in r.fst do  left := left + [ch];
-//   for var ch in r.sec do  if ch in left then result := ch;
-//end;
-//
-//
-//
-//function group_by_triples( sl:TStringlist ) : TList< tri_type >;
-//begin
-//   result := TList< tri_type >.Create;
-//   var i := 0;
-//   while i < sl.Count do begin
-//       var t:tri_type := tri_nil;
-//           t.fst      := sl[i];   inc(i);
-//           t.sec      := sl[i];   inc(i);
-//           t.thd      := sl[i];   inc(i);
-//       result.Add(t);
-//   end;
-//end;
-//
-//function find_common2( t:tri_type ) : char;
-//var left, mid : items;
-//          ch  : char;
-//begin
-//   left := [];
-//   mid  := [];
-//   result := '*';
-//   for ch in t.fst do  left := left + [ch];
-//   for ch in t.sec do  if ch in left then mid    := mid + [ch];
-//   for ch in t.thd do  if ch in mid  then result := ch;
-//end;
-//
-//
-//function calc_priority( ch:char ) : integer;
-//begin
-//  if ch > 'Z' then result := val_1[ch]        // lowercase
-//              else result := val_2[ch]        // uppercase
-//end;
 
 
 
@@ -129,16 +85,12 @@ begin
 
        // Part 1
 
-   var
+   
 
  (*
    var rucksacks :=  { Map (sl, transform_to_tuple) }    UFP.List_Map < res_type > (sl, transform_to_tuple );
 
    var common    :=  { Map (rucksacks, find_common) }    UFP.List_Map <res_type, char>  (rucksacks, find_common);
-
-   var priority  :=  { Map (common, calc_priority)  }    UFP.List_Map <char, integer>   (common, calc_priority );
-
-   var total1    :=  { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
 
        writeln;
        writeln( 'Part 1 answer : ', total1);
@@ -149,10 +101,6 @@ begin
    var triples  :=   { GroupBy triples (sl)         }    group_by_triples( sl );
 
    var common2  :=   { Map (triples, find_common2)  }    UFP.List_Map <tri_type, char>  (triples, find_common2);
-
-       priority :=   { Map (common2, calc_priority) }    UFP.List_Map <char, integer>   (common2, calc_priority );
-
-   var total2   :=   { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
 
        writeln;
        writeln( 'Part 2 answer : ', total2);
