@@ -12,9 +12,11 @@ uses generics.Collections, system.SysUtils, system.classes;
 
       class function List_Reduce <T>   ( L : TList<T>;    f : TFunc<T,T,T> )    : T;                       static;
 
+      class function List_Filter<T>( L : TList<T>;    f : TPredicate<T> )   : TList<T>;                    static;
+
       type
-        tuple <A,B>   = record fst : A; sec : B;          end;
-        triple<A,B,C> = record fst : A; sec : B; thd : C; end;
+        tuple <A,B>   = record fst : A; snd : B;          end;
+        triple<A,B,C> = record fst : A; snd : B; thd : C; end;
 
     end;
 
@@ -43,7 +45,7 @@ implementation
    end;
 
 
-   class function UFP.List_Map<U>   ( L : TStringList; f : TFunc<string,U> ) : TList<U>;
+   class function UFP.List_Map<U> ( L : TStringList; f : TFunc<string,U> ) : TList<U>;
    begin
      var L2 : TList<U> := TList<U>.create;
 
@@ -53,12 +55,24 @@ implementation
    end;
 
 
-   class function UFP.List_Reduce<T>   ( L : TList<T>; f : TFunc<T,T,T> ) : T;
+   class function UFP.List_Reduce<T> ( L : TList<T>; f : TFunc<T,T,T> ) : T;
    begin
          result := default(T);
 
          for var t_ in L do result := f(t_, result);
    end;
+
+
+
+   class function UFP.List_Filter<T> ( L : TList<T>; f : TPredicate<T> ) : TList<T>;
+   begin
+     var L2 : TList<T> := TList<T>.create;
+
+         for var T_ in L do if f(T_) then L2.Add(T_);
+
+     result := L2;
+   end;
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

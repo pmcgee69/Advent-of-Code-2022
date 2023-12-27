@@ -59,7 +59,7 @@ function transform_to_tuple( s:string ) : res_type;
 begin
    var      l := length(s) div 2;
    result.fst :=  leftstr(s,l);
-   result.sec := rightstr(s,l);
+   result.snd := rightstr(s,l);
 end;
 
 
@@ -69,7 +69,7 @@ begin
    left := [];
    result := '*';
    for var ch in r.fst do  left := left + [ch];
-   for var ch in r.sec do  if ch in left then result := ch;
+   for var ch in r.snd do  if ch in left then result := ch;
 end;
 
 
@@ -81,7 +81,7 @@ begin
    while i < sl.Count do begin
        var t:tri_type := tri_nil;
            t.fst      := sl[i];   inc(i);
-           t.sec      := sl[i];   inc(i);
+           t.snd      := sl[i];   inc(i);
            t.thd      := sl[i];   inc(i);
        result.Add(t);
    end;
@@ -95,7 +95,7 @@ begin
    mid  := [];
    result := '*';
    for ch in t.fst do  left := left + [ch];
-   for ch in t.sec do  if ch in left then mid    := mid + [ch];
+   for ch in t.snd do  if ch in left then mid    := mid + [ch];
    for ch in t.thd do  if ch in mid  then result := ch;
 end;
 
@@ -130,7 +130,7 @@ begin
        writeln( 'Part 1 answer : ', total1);
 
 
-   // Part 2
+       // Part 2
 
    var triples  :=   { GroupBy triples (sl)         }    group_by_triples( sl );
 

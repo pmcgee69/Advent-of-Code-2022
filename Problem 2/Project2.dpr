@@ -54,28 +54,28 @@ begin
         'C' : result.fst := Val_opp[C];
   end;
   case s[3] of
-        'X' : result.sec := Val_we [X];
-        'Y' : result.sec := Val_we [Y];
-        'Z' : result.sec := Val_we [Z];
+        'X' : result.snd := Val_we [X];
+        'Y' : result.snd := Val_we [Y];
+        'Z' : result.snd := Val_we [Z];
   end;
 end;
 
 
 function score ( r:res_type ) : integer;
 begin
-   case (r.sec - r.fst) of             // same choice = draw,  "1 ahead" (mod 3) = win, "1 behind" (mod 3) = lose
+   case (r.snd - r.fst) of             // same choice = draw,  "1 ahead" (mod 3) = win, "1 behind" (mod 3) = lose
           0 : result := 3;
        1,-2 : result := 6;
       -1, 2 : result := 0;
    end;
-   result := result + r.sec;
+   result := result + r.snd;
 end;
 
 
 function myreaction( r:res_type ) : res_type;
 var   we : integer;
 begin
-  case r.sec of
+  case r.snd of
        1 : we := r.fst - 1;        // lose
        2 : we := r.fst;            // draw
        3 : we := r.fst + 1;        // win
@@ -84,7 +84,7 @@ begin
   if we > 3  then  dec(we,3);
 
   result.fst := r.fst;
-  result.sec := we;
+  result.snd := we;
 end;
 
 
