@@ -1,4 +1,4 @@
-{$APPTYPE CONSOLE}
+﻿{$APPTYPE CONSOLE}
 program Project3;
 {
 https://adventofcode.com/2022/day/3
@@ -87,6 +87,7 @@ begin
    end;
 end;
 
+
 function find_common2( t:tri_type ) : char;
 var left, mid : items;
           ch  : char;
@@ -98,6 +99,7 @@ begin
    for ch in t.snd do  if ch in left then mid    := mid + [ch];
    for ch in t.thd do  if ch in mid  then result := ch;
 end;
+
 
 
 function calc_priority( ch:char ) : integer;
@@ -118,13 +120,17 @@ begin
 
        // Part 1
 
-   var rucksacks :=  { Map (sl, transform_to_tuple) }    UFP.List_Map < res_type > (sl, transform_to_tuple );
+   var priority  :=  { Map (  sl,   calc_priority ⃝ find_common ⃝ transform_to_tuple  ) }
 
-   var common    :=  { Map (rucksacks, find_common) }    UFP.List_Map <res_type, char>  (rucksacks, find_common);
+                     UFP.List_Map < integer > ( sl,   UFP.Compose3                <string, res_type, char, integer>
+                                                         ( transform_to_tuple,  // string   -> res_type
+                                                           find_common,         // res_type -> char
+                                                           calc_priority )      // char     -> integer
+                                              );
 
-   var priority  :=  { Map (common, calc_priority)  }    UFP.List_Map <char, integer>   (common, calc_priority );
+   var total1    :=  { Reduce (priority, Sum)       }
 
-   var total1    :=  { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
+                     UFP.List_Reduce<integer> ( priority, Sum );
 
        writeln;
        writeln( 'Part 1 answer : ', total1);
@@ -132,13 +138,19 @@ begin
 
        // Part 2
 
-   var triples  :=   { GroupBy triples (sl)         }    group_by_triples( sl );
+   var triples  :=   { GroupBy triples (sl)         } group_by_triples( sl );
 
-   var common2  :=   { Map (triples, find_common2)  }    UFP.List_Map <tri_type, char>  (triples, find_common2);
+       priority :=   { Map (  triples,   calc_priority ⃝ find_common2  ) }
 
-       priority :=   { Map (common2, calc_priority) }    UFP.List_Map <char, integer>   (common2, calc_priority );
+                     UFP.List_Map <tri_type, integer>
+                                  ( triples,          UFP.Compose               <tri_type, char, integer>
+                                                         ( find_common2,      // tri_type -> char
+                                                           calc_priority )    // char
+                                  );
 
-   var total2   :=   { Reduce (priority, Sum)       }    UFP.List_Reduce<integer> ( priority, Sum );
+   var total2   :=   { Reduce (priority, Sum)       }
+
+                     UFP.List_Reduce<integer> ( priority, Sum );
 
        writeln;
        writeln( 'Part 2 answer : ', total2);
@@ -147,4 +159,52 @@ begin
        readln;
 end.
 
+
+// -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
+writeln(' Part 1 in 3 steps ')
+
+(*
+   var rucksacks :=  { Map (sl, transform_to_tuple) }    UFP.List_Map < res_type > (sl, transform_to_tuple );
+
+   var common    :=  { Map (rucksacks, find_common) }    UFP.List_Map <res_type, char>  (rucksacks, find_common);
+
+   var priority  :=  { Map (common, calc_priority)  }    UFP.List_Map <char, integer>   (common, calc_priority );
+*)
+
+
+writeln(' Part 1 explicitly defining a triple composition of functions ')
+
+(*
+   var fn        :=  UFP.Compose3                        <string, res_type, char, integer>  (
+                            transform_to_tuple,
+                            find_common,
+                            calc_priority );
+
+   var priority  :=  UFP.List_Map < integer > (sl,  fn  );
+*)
+
+// -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
+writeln(' Part 2 in 2 steps')
+
+(*
+   var common2  :=   { Map (triples, find_common2)  }    UFP.List_Map <tri_type, char>  (triples, find_common2);
+
+       priority :=   { Map (common2, calc_priority) }    UFP.List_Map <char, integer>   (common2, calc_priority );
+*)
+
+
+writeln(' Part 2 explicitly defining a composition of functions')
+
+(*
+   var fn       :=   UFP.Compose               <tri_type, char, integer> (
+                            find_common2,
+                            calc_priority );
+
+       priority :=   UFP.List_Map <tri_type, integer> (triples, fn);
+*)
+
+
+// -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 

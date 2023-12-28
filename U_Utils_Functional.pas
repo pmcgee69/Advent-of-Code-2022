@@ -12,8 +12,14 @@ uses generics.Collections, system.SysUtils, system.classes;
 
       class function List_Reduce <T>   ( L : TList<T>;    f : TFunc<T,T,T> )    : T;                       static;
 
-      class function List_Filter<T>( L : TList<T>;    f : TPredicate<T> )   : TList<T>;                    static;
+      class function List_Filter <T>   ( L : TList<T>;    f : TPredicate<T> )   : TList<T>;                static;
 
+      class function Compose  <T,U,V>  ( f : TFunc<T,U>;  g : TFunc<U,V> )      : TFunc<T,V>;              static;
+
+      class function Compose3 <T,U,V,W>( f : TFunc<T,U>;  
+                                         g : TFunc<U,V>;  h : TFunc<V,W> )      : TFunc<T,W>;              static;
+
+      
       type
         tuple <A,B>   = record fst : A; snd : B;          end;
         triple<A,B,C> = record fst : A; snd : B; thd : C; end;
@@ -74,6 +80,26 @@ implementation
    end;
 
 
+
+   class function UFP.Compose <T,U,V> ( f : TFunc<T,U>; g : TFunc<U,V> ) : TFunc<T,V>;
+   begin   
+         result := function( _t : T ) : V
+                   begin
+                      result := g( f( _t ) )
+                   end;
+   end;
+
+
+
+   class function UFP.Compose3 <T,U,V,W> ( f : TFunc<T,U>; g : TFunc<U,V>; H : TFunc<V,W> ) : TFunc<T,W >;
+   begin   
+         result := function( _t : T ) : W
+                   begin
+                      result := h( g( f( _t ) ) )
+                   end;
+   end;
+
+   
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
