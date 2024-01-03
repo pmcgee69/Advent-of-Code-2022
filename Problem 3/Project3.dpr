@@ -32,6 +32,7 @@ Find the item type that appears in both compartments of each rucksack. What is t
 uses
   system.Classes,
   system.StrUtils,
+  system.SysUtils,
   generics.Collections,
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
@@ -118,15 +119,15 @@ begin
        sl.LoadFromFile('..\..\Prob 3 Data.txt');
 
 
-       // Part 1
+       // Part 1    -  the shortest way
 
    var priority  :=  { Map (  sl,   calc_priority ⃝ find_common ⃝ transform_to_tuple  ) }
 
-                     UFP.List_Map < integer > ( sl,   UFP.Compose3                <string, res_type, char, integer>
-                                                         ( transform_to_tuple,  // string   -> res_type
-                                                           find_common,         // res_type -> char
-                                                           calc_priority )      // char     -> integer
-                                              );
+                       UFP.List_Map < integer > ( sl,   UFP.Compose3                <string, res_type, char, integer>
+                                                          ( transform_to_tuple,   // string   -> res_type
+                                                            find_common,          // res_type -> char
+                                                            calc_priority )       // char     -> integer
+                                                );
 
    var total1    :=  { Reduce (priority, Sum)       }
 
@@ -183,6 +184,31 @@ writeln(' Part 1 explicitly defining a triple composition of functions ')
 
    var priority  :=  UFP.List_Map < integer > (sl,  fn  );
 *)
+
+
+writeln(' Part 1 partially applying the generic functions first ')
+(*
+   var map_fn := function ( sl: tstringlist; f : TFunc<string,integer> ) : TList <Integer>
+                 begin
+                   result := UFP.List_Map< integer > ( sl, f )
+                 end;
+
+   var comp3  := function ( f : TFunc< string  , res_type >;
+                            g : TFunc< res_type, char     >;
+                            h : TFunc< char    , integer  > ) : TFunc <string, integer>
+                 begin
+                   result :=   UFP.Compose3 <string, res_type, char, integer>  (f,g,h);
+                 end;
+
+
+   var priority  :=  { Map (  sl,   calc_priority ⃝ find_common ⃝ transform_to_tuple  ) }
+
+                       map_fn( sl, comp3( transform_to_tuple,  find_common,  calc_priority ) );
+*)
+
+
+
+
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
