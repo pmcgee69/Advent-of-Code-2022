@@ -15,6 +15,9 @@
         <Projects Include="Problem 4\Project4.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Problem 5\Project5.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="Project4:Make">
         <MSBuild Projects="Problem 4\Project4.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Project5">
+        <MSBuild Projects="Problem 5\Project5.dproj"/>
+    </Target>
+    <Target Name="Project5:Clean">
+        <MSBuild Projects="Problem 5\Project5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project5:Make">
+        <MSBuild Projects="Problem 5\Project5.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Project1;Project2;Project3;Project4"/>
+        <CallTarget Targets="Project1;Project2;Project3;Project4;Project5"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Project1:Clean;Project2:Clean;Project3:Clean;Project4:Clean"/>
+        <CallTarget Targets="Project1:Clean;Project2:Clean;Project3:Clean;Project4:Clean;Project5:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Project1:Make;Project2:Make;Project3:Make;Project4:Make"/>
+        <CallTarget Targets="Project1:Make;Project2:Make;Project3:Make;Project4:Make;Project5:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
