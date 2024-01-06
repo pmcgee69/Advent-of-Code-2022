@@ -15,24 +15,40 @@ The first time a marker appears is after the seventh character arrives.
 Once it does, the last four characters received are jpqm, which are all different.
 In this case, your subroutine should report the value 7, because the first start-of-packet marker is complete after 7 characters have been processed.
 
+       Here are a few more examples:
+
+       bvwbjplbgvbhsrlpgdmjqwftvncz      : first marker after character 5
+       nppdvjthqldpwncqszvftbrmjlhg      : first marker after character 6
+       nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg : first marker after character 10
+       zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw  : first marker after character 11
+
+
 PART 1
 How many characters need to be processed before the first start-of-packet marker is detected?
 
-PART 2
 
+A start-of-message marker is just like a start-of-packet marker, except it consists of 14 distinct characters rather than 4.
+
+Here are the first positions of start-of-message markers for all of the above examples:
+
+       mjqjpqmgbljsphdztnvjfqwrcgsmlb    : first marker after character 19
+       bvwbjplbgvbhsrlpgdmjqwftvncz      : first marker after character 23
+       nppdvjthqldpwncqszvftbrmjlhg      : first marker after character 23
+       nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg : first marker after character 29
+       zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw  : first marker after character 26
+
+PART 2
+How many characters need to be processed before the first start-of-message marker is detected?
 }
 
 uses
   system.Classes,
-  system.SysUtils,
   generics.Collections,
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
-const
-  window_size = 4;
 
 
-function check_window( s:string; i:integer ) : boolean;
+function check_window( window_size:integer; s:string; i:integer ) : boolean; inline;
 begin
       if i < window_size then exit( false );
 
@@ -45,19 +61,18 @@ begin
 end;
 
 
-{
-       Here are a few more examples:
+function check_window_4( s:string; i:integer ) : boolean;      // Partial Application of check_window function
+begin
+      result := check_window(4, s ,i)
+end;
 
-       bvwbjplbgvbhsrlpgdmjqwftvncz: first marker after character 5
-       nppdvjthqldpwncqszvftbrmjlhg: first marker after character 6
-       nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg : first marker after character 10
-       zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw  : first marker after character 11
 
-       windows := UFP.String_Map<Boolean>( 'bvwbjplbgvbhsrlpgdmjqwftvncz',      check_window );
-       windows := UFP.String_Map<Boolean>( 'nppdvjthqldpwncqszvftbrmjlhg',      check_window );
-       windows := UFP.String_Map<Boolean>( 'nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg', check_window );
-       windows := UFP.String_Map<Boolean>( 'zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw',  check_window );
-}
+function check_window_14( s:string; i:integer ) : boolean;
+begin
+      result := check_window(14, s ,i)
+end;
+
+
 begin
 
        // Preliminaries
@@ -65,29 +80,43 @@ begin
    var sl := TStringList.create;
        sl.LoadFromFile('..\..\Prob 6 Data.txt');
 
+
        // Part 1
 
-   var windows := UFP.String_Map<Boolean>( sl.Text, check_window );
+   var windows := UFP.String_Map<Boolean>( sl.Text, check_window_4 );
 
        for var i := 1 to windows.Count do
 
-           if windows[i-1] then write(i:6);
+           if windows[i-1] then begin writeln(i:6); break end;
 
        writeln;
 
 
        // Part 2
 
+       windows := UFP.String_Map<Boolean>( sl.Text, check_window_14 );
+
+       for var i := 1 to windows.Count do
+
+           if windows[i-1] then begin writeln(i:6); break end;
+
+       writeln;
 
 
 
        readln;
 
-   {   Part 1 answer :
+   {   Part 1 answer :  1134
 
-       Part 2 answer :    }
+       Part 2 answer :  2263  }
 end.
 
 
+{
+       windows := UFP.String_Map<Boolean>( 'bvwbjplbgvbhsrlpgdmjqwftvncz',      check_window_4  );
+       windows := UFP.String_Map<Boolean>( 'nppdvjthqldpwncqszvftbrmjlhg',      check_window_4  );
+       windows := UFP.String_Map<Boolean>( 'nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg', check_window_14 );
+       windows := UFP.String_Map<Boolean>( 'zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw',  check_window_14 );
+}
 
 
