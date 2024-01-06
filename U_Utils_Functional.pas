@@ -16,10 +16,12 @@ uses generics.Collections, system.SysUtils, system.classes;
 
       class function Compose  <T,U,V>  ( f : TFunc<T,U>;  g : TFunc<U,V> )      : TFunc<T,V>;              static;
 
-      class function Compose3 <T,U,V,W>( f : TFunc<T,U>;  
+      class function Compose3 <T,U,V,W>( f : TFunc<T,U>;
                                          g : TFunc<U,V>;  h : TFunc<V,W> )      : TFunc<T,W>;              static;
 
-      
+      class function String_Map  <U>   ( const s : string;f : TFunc<string, integer, U> ) : TList<U>;      static;
+
+
       type
         tuple <A,B>   = record fst : A; snd : B;          end;
         triple<A,B,C> = record fst : A; snd : B; thd : C; end;
@@ -47,7 +49,7 @@ implementation
 
          for var T_ in L do L2.Add( f(T_) );
 
-     result := L2;
+         result := L2;
    end;
 
 
@@ -57,7 +59,17 @@ implementation
 
          for var T_ in L do L2.Add( f(T_) );
 
-     result := L2;
+         result := L2;
+   end;
+
+
+   class function UFP.String_Map<U> ( const s : string; f : TFunc<string, integer, U> ) : TList<U>;
+   begin
+     var L2 : TList<U> := TList<U>.create;
+
+         for var i := 1 to length(s) do L2.Add( f(s, i) );
+
+         result := L2;
    end;
 
 
@@ -76,13 +88,13 @@ implementation
 
          for var T_ in L do if f(T_) then L2.Add(T_);
 
-     result := L2;
+         result := L2;
    end;
 
 
 
    class function UFP.Compose <T,U,V> ( f : TFunc<T,U>; g : TFunc<U,V> ) : TFunc<T,V>;
-   begin   
+   begin
          result := function( _t : T ) : V
                    begin
                       result := g( f( _t ) )
@@ -92,14 +104,14 @@ implementation
 
 
    class function UFP.Compose3 <T,U,V,W> ( f : TFunc<T,U>; g : TFunc<U,V>; H : TFunc<V,W> ) : TFunc<T,W >;
-   begin   
+   begin
          result := function( _t : T ) : W
                    begin
                       result := h( g( f( _t ) ) )
                    end;
    end;
 
-   
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
