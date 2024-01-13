@@ -47,6 +47,7 @@ uses
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
 
+       // functions
 
 function check_window( window_size:integer; s:string; i:integer ) : boolean; inline;
 begin
@@ -72,6 +73,8 @@ begin
       result := check_window(14, s ,i)
 end;
 
+
+       // main
 
 begin
 

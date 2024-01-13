@@ -119,11 +119,11 @@ begin
        for lines in sl do
        begin
               a    := lines.Split( [' '] );                            // 'move 1 from 2 to 1'   ->  ['move','1','from','2','to','1']
-              n    := a[1].ToInteger;
-              from := a[3].ToInteger;
-              to_  := a[5].ToInteger;
+              n    := a[1].ToInteger;                                  //
+              from := a[3].ToInteger;                                  //                        ->  ( 1, 2, 1 )
+              to_  := a[5].ToInteger;                                  //
 
-              st_move( n, st[ from ] , st[ to_ ] );
+              st_move( n, st[ from ] , st[ to_ ] );                    //  ( st, tuple )      ->   stack movement
        end;
 
        write( 'Part 1 answer : ' );
@@ -144,6 +144,9 @@ begin
               to_  := a[5].ToInteger;
 
               st_move2( n, st2[ from ] , st2[ to_ ] );
+
+           // st_move2( st2, process(lines) );
+
        end;
 
        write( 'Part 2 answer : ' );
