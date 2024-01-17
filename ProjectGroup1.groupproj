@@ -24,6 +24,9 @@
         <Projects Include="Problem 7\Project7.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\Intf_Test_1_Clock.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -95,14 +98,23 @@
     <Target Name="Project7:Make">
         <MSBuild Projects="Problem 7\Project7.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Intf_Test_1_Clock">
+        <MSBuild Projects="..\Intf_Test_1_Clock.dproj"/>
+    </Target>
+    <Target Name="Intf_Test_1_Clock:Clean">
+        <MSBuild Projects="..\Intf_Test_1_Clock.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Intf_Test_1_Clock:Make">
+        <MSBuild Projects="..\Intf_Test_1_Clock.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Project1;Project2;Project3;Project4;Project5;Project6;Project7"/>
+        <CallTarget Targets="Project1;Project2;Project3;Project4;Project5;Project6;Project7;Intf_Test_1_Clock"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Project1:Clean;Project2:Clean;Project3:Clean;Project4:Clean;Project5:Clean;Project6:Clean;Project7:Clean"/>
+        <CallTarget Targets="Project1:Clean;Project2:Clean;Project3:Clean;Project4:Clean;Project5:Clean;Project6:Clean;Project7:Clean;Intf_Test_1_Clock:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Project1:Make;Project2:Make;Project3:Make;Project4:Make;Project5:Make;Project6:Make;Project7:Make"/>
+        <CallTarget Targets="Project1:Make;Project2:Make;Project3:Make;Project4:Make;Project5:Make;Project6:Make;Project7:Make;Intf_Test_1_Clock:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

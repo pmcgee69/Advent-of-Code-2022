@@ -63,13 +63,6 @@ $ ls
   7214296  k
 }
 
-uses
-  system.Classes,
-  system.SysUtils,
-  generics.Collections,
-  U_Utils_Functional in '..\U_Utils_Functional.pas';
-
-
 // Planning
 //
 //   data structure ...   Dict < string, record >   ...   Size.  List of (file, size) .  List of string.   Parent.
@@ -78,42 +71,14 @@ uses
 //                        :   ls  - add dirs or files
 //
 
+uses
+  system.Classes,
+  system.SysUtils,
+  generics.Collections,
+  U_dir_types in 'U_dir_types.pas';
+
 type
-  Line_mode = (input, output);
-
-  TFile_tuple = record
-       filename : string;
-       filesize : cardinal;
-  end;
-
-  TDir_record = record
-       file_size : cardinal;
-       parent    : string;
-       files     : TList<TFile_tuple>;
-       subdirs   : TList<string>;
-  end;
-
-  TDirs_type = TDictionary< string, TDir_record >;
-
-
-       // functions
-
-procedure process_cd( var dirs:tdirs_type; cur_dir, s:string );
-begin
-
-end;
-
-
-procedure process_dir( var dirs:tdirs_type; cur_dir, s:string );
-begin
-
-end;
-
-
-procedure process_file( var dirs:tdirs_type; cur_dir, s:string );
-begin
-
-end;
+       Line_mode = (input, output);
 
 
        // main
@@ -129,8 +94,12 @@ begin
 
    var dirs        := TDirs_type.Create;
    var mode        := input;
-   var current_dir := '/';
+   var current_dir :  string := '/';
+   var parent_dir  :  string := '/';
+   var parpar_dir  :  string := '/';                           // ugly :(
+   var root        := TDir_record.create('/','/','/');
 
+       dirs.Add('/-/', root);
        for var s in sl do begin
 
            var text := s.Split( [' '] );                       //  $ cd place   or   $ ls
@@ -139,15 +108,15 @@ begin
                               else mode := output;
 
                case mode of
-                    input :  begin
-                                if text[1]='cd'  then  process_cd  ( dirs, current_dir, text[2] );
-                             end;
+                    input :   begin
+                                if text[1]='cd'  then  process_cd  ( dirs, current_dir, parent_dir, parpar_dir, text[2] );
+                              end;
 
-                    output : begin
-                                if text[0]='dir' then  process_dir ( dirs, current_dir, text[1] )
+                    output :  begin
+                                if text[0]='dir' then  process_dir ( dirs, current_dir, parent_dir, text[1] )
 
-                                                 else  process_file( dirs, current_dir, text[1] );
-                             end;
+                                                 else  process_file( dirs, current_dir, text[0].ToInteger, text[1] );
+                              end;
                end;
        end;
 
@@ -159,7 +128,6 @@ begin
 
 
        writeln;
-
 
 
        readln;
