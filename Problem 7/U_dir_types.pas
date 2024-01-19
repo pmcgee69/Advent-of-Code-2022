@@ -12,12 +12,11 @@ type
 
   TDir_record = record
        name,
-       parent,
-       parpar    : string;
+       parent    : string;
        file_size : cardinal;
        files     : TList<TFile_tuple>;
        subdirs   : TList<string>;
-       constructor create( name, parent, parpar:string );
+       constructor create( name_, parent_:string );
        function    add_dir ( s:string )      : boolean;
        function    add_file( f:TFile_tuple ) : boolean;
   end;
@@ -25,9 +24,9 @@ type
   TDirs_type = TDictionary< string, TDir_record >;
 
 
-procedure process_cd  ( dirs:tdirs_type; var cur_dir, par_dir, parpar_dir, cmd:string );
-procedure process_dir ( dirs:tdirs_type; var cur_dir, par_dir, new:string );
-procedure process_file( dirs:tdirs_type;     cur_dir:string; siz:integer; fn:string   );
+procedure process_cd  ( const dirs:tdirs_type; var cur_dir, par_dir, cmd:string );
+procedure process_dir (       dirs:tdirs_type; var cur_dir, par_dir, new:string );
+procedure process_file(       dirs:tdirs_type;     cur_dir:string; siz:integer; fn:string   );
 
 
 
@@ -35,6 +34,7 @@ implementation
 
 type
   Tkey_str = string;
+
 
        // record methods
 
@@ -45,11 +45,10 @@ type
   end;
 
 
-  constructor TDir_record.create( name,parent,parpar:string );
+  constructor TDir_record.create( name_,parent_:string );
   begin
-       name      := name;
-       parent    := parent;
-       parpar    := parpar;
+       name      := name_;
+       parent    := parent_;
        file_size := 0;
        files     := TList<TFile_tuple>.Create;
        subdirs   := TList<string>.Create;
@@ -73,17 +72,52 @@ type
 
        // functions
 
-procedure add_to_dir( var dirs:tdirs_type; cur_dir, par_dir, new:string);
+function match_parent_dir( const dirs:tdirs_type; cur_rec,par_rec:TDir_record; var old_cur_dir, old_par_dir:string ) : boolean;
 begin
-   var key := cur_dir + '-' + new;
-       dirs.Add(key, Tdir_record.create(new, cur_dir, par_dir))
+       if (cur_rec.name = old_par_dir) and
+           cur_rec.subdirs.Contains(old_cur_dir) then
+           begin
+                 old_cur_dir := cur_rec.name;
+                 old_par_dir := par_rec.name;
+                 exit(True);
+           end
+       else
+           for var sub in cur_rec.subdirs do
+           begin
+             var sub_rec : TDir_record;
+             var key := cur_rec.name + '-' + sub;
+                 dirs.TryGetValue( key, sub_rec);
+                 if match_parent_dir( dirs, sub_rec, cur_rec, old_cur_dir, old_par_dir) then exit(True);
+           end;
+       exit(false);
 end;
 
 
-procedure process_cd( dirs:tdirs_type; var cur_dir,                            // there are non-unique directory names at different points in the tree
-                                           par_dir,
-                                           parpar_dir, cmd:string );
-begin                                                                          // $ cd place   or   $ ls
+procedure move_to_parent_dir( const dirs:tdirs_type; var old_cur_dir, old_par_dir:string );
+begin
+   var root_rec:  TDir_record;
+       dirs.TryGetValue( '/-/', root_rec);
+   var par_rec := root_rec;
+   var cur_rec := root_rec;
+
+       if not match_parent_dir( dirs, cur_rec, par_rec, old_cur_dir, old_par_dir) then
+          writeln('Move to parent - error.');
+end;
+
+
+
+procedure add_to_dir( var dirs:tdirs_type; cur_dir, par_dir, new:string );
+begin
+   var key := cur_dir + '-' + new;
+       dirs.Add(key, Tdir_record.create(new, cur_dir))
+end;
+
+
+
+
+procedure process_cd( const dirs:tdirs_type; var cur_dir,                      // there are non-unique directory names at different points in the tree
+                                                 par_dir, cmd:string );        // $ cd place   or   $ ls
+begin
    var {}cd := cur_dir;
 
    var     key := par_dir + '-' + cur_dir;
@@ -93,17 +127,14 @@ begin                                                                          /
 
        if cmd = cur_dir then exit;
        if cmd = '..'    then begin
-                             cur_dir := par_dir;                              // should always be able to move up
-                             par_dir := parpar_dir;
-                          parpar_dir := '';                                   // * bug * really need to search down from root with this approach
+                             move_to_parent_dir(dirs, cur_dir, par_dir)
                         end
                         else begin
-                          parpar_dir := par_dir;
                              par_dir := cur_dir;
                              cur_dir := cmd;
                         end;
 
-       {}writeln(cd, '  ->  ', cur_dir);
+       {}writeln(#13#10+cmd+#13#10, ' : ',cd, '  ->  ', cur_dir);
 end;
 
 

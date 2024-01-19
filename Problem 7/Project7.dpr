@@ -96,8 +96,7 @@ begin
    var mode        := input;
    var current_dir :  string := '/';
    var parent_dir  :  string := '/';
-   var parpar_dir  :  string := '/';                           // ugly :(
-   var root        := TDir_record.create('/','/','/');
+   var root        := TDir_record.create('/','/');
 
        dirs.Add('/-/', root);
        for var s in sl do begin
@@ -109,7 +108,7 @@ begin
 
                case mode of
                     input :   begin
-                                if text[1]='cd'  then  process_cd  ( dirs, current_dir, parent_dir, parpar_dir, text[2] );
+                                if text[1]='cd'  then  process_cd  ( dirs, current_dir, parent_dir, text[2] );
                               end;
 
                     output :  begin
