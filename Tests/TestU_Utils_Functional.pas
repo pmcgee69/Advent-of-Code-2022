@@ -47,6 +47,7 @@ begin
 
   var ReturnValue := ( L2[0] = 123 ) and ( L2[1] = 2 );
 
+      CheckEquals( true, ReturnValue);
       L.Free;
       L2.Free;
 end;
@@ -65,6 +66,7 @@ begin
                      ( L2[1] =  4 ) and
                      ( L2[2] =  9 ) and
                      ( L2[3] = 16 ) and ( L2.Count = 4 );
+      CheckEquals( true, ReturnValue);
       L.Free;
       L2.Free;
 end;
@@ -87,6 +89,7 @@ begin
                      ( L2[2] = 'al' ) and
                      ( L2[3] = 'll' ) and
                      ( L2[4] = 'ls' ) and ( L2.Count = 5 );
+      CheckEquals( true, ReturnValue);
       L2.Free;
 end;
 
@@ -98,10 +101,9 @@ begin
   var L := TList<Integer>.Create( [1,2,3,4] );
       f := function (x,y:integer):integer  begin exit( Max(x,y) ) end;
 
-  var I := UFP.List_Reduce<integer>(L, f);
+  var ReturnValue := UFP.List_Reduce<integer>(L, f);
 
-  var ReturnValue := ( I = 4 );
-
+      CheckEquals( 4, ReturnValue, 'Max value');
       L.Free;
 end;
 
@@ -117,6 +119,7 @@ begin
 
   var ReturnValue := ( L2[0] = 3 ) and ( L2[1] = 4 ) and ( L2.Count = 2 );
 
+      CheckEquals( true, ReturnValue);
       L.Free;
       L2.Free;
 end;
@@ -140,6 +143,7 @@ begin
                      ( L2[1] =  4 ) and
                      ( L2[2] =  9 ) and
                      ( L2[3] = 16 ) and ( L2.Count = 4 );
+      CheckEquals( true, ReturnValue);
       L.Free;
       L2.Free;
 end;
