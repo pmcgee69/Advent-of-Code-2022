@@ -94,11 +94,11 @@ begin
 
    var dirs        := TDirs_type.Create;
    var mode        := input;
-   var current_dir :  string := '/';
-   var parent_dir  :  string := '/';
-   var root        := TDir_record.create('/','/');
+       root        := make_root;
+   var current_dir := root;
+   var parent_dir  := root;
 
-       dirs.Add('/-/', root);
+       register_root( dirs );
        for var s in sl do begin
 
            var text := s.Split( [' '] );                       //  $ cd place   or   $ ls
@@ -112,15 +112,19 @@ begin
                               end;
 
                     output :  begin
-                                if text[0]='dir' then  process_dir ( dirs, current_dir, parent_dir, text[1] )
+                                if text[0]='dir' then  process_dir ( dirs, current_dir, text[1] )
 
-                                                 else  process_file( dirs, current_dir, text[0].ToInteger, text[1] );
+                                                 else  process_file( dirs, current_dir, text[1], text[0].ToInteger );
                               end;
                end;
        end;
 
 
        writeln;
+
+       for var dir in dirs do  writeln( dir.Value.file_size );
+
+
 
 
        // Part 2

@@ -1084,6 +1084,9 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <UnitTesting>
+                <TestProjectName>C:\Users\Perseus\Documents\Embarcadero\Studio\Projects\AOC\2022\Advent-of-Code-2022\Problem 1\Test\Project1Tests.dproj</TestProjectName>
+            </UnitTesting>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
