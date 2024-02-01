@@ -46,6 +46,7 @@ procedure process_file( var   dirs:tdirs_type;          var cur_rec:TDir_record;
 
 var
   root : TDir_record;
+  dirs : TDirs_type;
 
 
 implementation
@@ -85,7 +86,7 @@ type
        file_size := 0;
        files     := TList<TFile_tuple>.Create;
        subdirs   := TList<TSubdir_tuple>.Create;
-       guid      := TGuid.Empty;
+     //guid      := TGuid.Empty;
        par_guid  := par_guid_;
        CreateGUID(guid);
   end;
@@ -229,5 +230,11 @@ begin
        writeln('add file : ', fname, ' : ', fsize);
 end;
 
+
+initialization
+
+       dirs        := TDirs_type.Create;
+       root        := make_root;
+       register_root( dirs );
 
 end.

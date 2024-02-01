@@ -92,13 +92,23 @@ begin
 
        // Part 1
 
-   var dirs        := TDirs_type.Create;
+// var dirs        := TDirs_type.Create;
+//     root        := make_root;
+//     register_root( dirs );
    var mode        := input;
-       root        := make_root;
    var current_dir := root;
    var parent_dir  := root;
 
-       register_root( dirs );
+{
+       writeln(root.file_size);
+       root.file_size := 100;
+       writeln(root.file_size);
+   var x : TDir_record;
+   var k := '/-'+'/-'+root.dir_id.ToString;
+       dirs.Items[k] := root;
+       dirs.TryGetValue( k, x);
+       writeln(x.file_size);
+}
        for var s in sl do begin
 
            var text := s.Split( [' '] );                       //  $ cd place   or   $ ls
@@ -107,15 +117,10 @@ begin
                               else mode := output;
 
                case mode of
-                    input :   begin
-                                if text[1]='cd'  then  process_cd  ( dirs, current_dir, parent_dir, text[2] );
-                              end;
+                    input :   if text[1]='cd'  then  process_cd  ( dirs, current_dir, parent_dir, text[2] );
 
-                    output :  begin
-                                if text[0]='dir' then  process_dir ( dirs, current_dir, text[1] )
-
-                                                 else  process_file( dirs, current_dir, text[1], text[0].ToInteger );
-                              end;
+                    output :  if text[0]='dir' then  process_dir ( dirs, current_dir, text[1] )
+                                               else  process_file( dirs, current_dir, text[1], text[0].ToInteger );
                end;
        end;
 
