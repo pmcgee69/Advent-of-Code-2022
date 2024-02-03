@@ -92,23 +92,10 @@ begin
 
        // Part 1
 
-// var dirs        := TDirs_type.Create;
-//     root        := make_root;
-//     register_root( dirs );
    var mode        := input;
    var current_dir := root;
    var parent_dir  := root;
 
-{
-       writeln(root.file_size);
-       root.file_size := 100;
-       writeln(root.file_size);
-   var x : TDir_record;
-   var k := '/-'+'/-'+root.dir_id.ToString;
-       dirs.Items[k] := root;
-       dirs.TryGetValue( k, x);
-       writeln(x.file_size);
-}
        for var s in sl do begin
 
            var text := s.Split( [' '] );                       //  $ cd place   or   $ ls

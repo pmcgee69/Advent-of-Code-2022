@@ -4,6 +4,8 @@ interface
 uses generics.Collections, Xml.XMLDoc, Xml.XMLIntf;
 
 type
+  TKey_str = string;
+
   TFile_tuple = record
        filename : string;
        filesize : cardinal;
@@ -34,7 +36,15 @@ type
      //property    dir_id : TGuid read guid;
   end;
 
-  TDirs_type = TDictionary< string, TDir_record >;
+  TDirs_type   = TDictionary< TKey_str, TDir_record >;
+
+  TDirs_helper = class helper for TDirs_type
+       procedure   update_dirs  ( rec:TDir_record );
+  end;
+
+var
+  root : TDir_record;
+  dirs : TDirs_type;
 
 
 function  make_root : TDir_record;
@@ -44,16 +54,9 @@ procedure process_cd  ( const dirs:tdirs_type; var cur_rec, par_rec:TDir_record;
 procedure process_dir ( var   dirs:tdirs_type;          var cur_rec:TDir_record;   new:string );
 procedure process_file( var   dirs:tdirs_type;          var cur_rec:TDir_record; fname:string; fsize:integer );
 
-var
-  root : TDir_record;
-  dirs : TDirs_type;
-
 
 implementation
 uses System.SysUtils;
-
-type
-  Tkey_str = string;
 
 
        // record methods
@@ -107,7 +110,7 @@ type
                                          files.Add(f);
                                          file_size := file_size + f.filesize;
                                        end
-                                  else result := false;
+                                  else   result := false;
   end;
 
 
@@ -118,9 +121,17 @@ type
         result := a+'-'+b+'-'+c;
   end;
 
-  function  make_key( parent,child:Tdir_record ): string;              overload;
+  function make_key( child:Tdir_record ): string;                      overload;
   begin
-        result := parent.name+'-'+child.name+'-'+child.guid.ToString;
+        result := child.parent+'-'+child.name+'-'+child.guid.ToString;
+  end;
+
+
+       // helper method
+
+  procedure TDirs_helper.update_dirs(rec: TDir_record);
+  begin
+        dirs.Items[ make_key( rec ) ] := rec;
   end;
 
 
@@ -204,19 +215,18 @@ begin                                                                           
 end;
 
 
-
-
 procedure process_dir( var dirs:tdirs_type; var cur_rec:TDir_record; new:string);                        // dir xyz
 begin
        if not cur_rec.contains_dir( new ) then
                begin
                  var sub_rec := Tdir_record.create(new, cur_rec.name, cur_rec.guid);
 
-                 var key     := make_key( cur_rec, sub_rec);
+                 var key     := make_key( sub_rec);
                  var sub     := TSubdir_tuple.create( sub_rec.name, sub_rec.guid );
 
-                     dirs.Add(key, sub_rec);
                      cur_rec.subdirs.Add( sub );
+                     dirs.Update_dirs( cur_rec );
+                     dirs.Add( key, sub_rec );
                end;
 
        writeln('add dir : ', new);
@@ -226,6 +236,7 @@ end;
 procedure process_file( var dirs:tdirs_type; var cur_rec:TDir_record; fname:string; fsize:integer);      // ddddd filename
 begin
        cur_rec.add_file( TFile_tuple.create(fname, fsize) );
+       dirs.Update_dirs( cur_rec );
 
        writeln('add file : ', fname, ' : ', fsize);
 end;
